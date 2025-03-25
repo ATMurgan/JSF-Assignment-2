@@ -29,7 +29,7 @@ public class MovieViewModel extends ViewModel {
     }
 
     public void getMovieDeets(String movieTitle){
-        String apiKey = "insert apikey here";
+        String apiKey = "10335575"; // Inserted my own API key from OMDB
         String url = "https://www.omdbapi.com/?apikey="+apiKey+"&t="+movieTitle;
 
         ApiClient.get(url, new Callback(){
@@ -70,7 +70,8 @@ public class MovieViewModel extends ViewModel {
                     movie.setTitle(title);
                     movie.setYear(year);
                     movie.setStudio(studio);
-                    movie.setPosterUrl(posterUrl);
+                    // Img should be set to an int so I parsed it
+                    movie.setPosterUrl(Integer.parseInt(posterUrl));
                     movie.setDescription(movieDescription);
 
                     movie.setDescription(movieDescription);
