@@ -70,8 +70,7 @@ public class MovieViewModel extends ViewModel {
                     movie.setTitle(title);
                     movie.setYear(year);
                     movie.setStudio(studio);
-                    // Img should be set to an int so I parsed it
-                    movie.setPosterUrl(Integer.parseInt(posterUrl));
+                    movie.setPosterUrl(posterUrl);
                     movie.setDescription(movieDescription);
 
                     movie.setDescription(movieDescription);

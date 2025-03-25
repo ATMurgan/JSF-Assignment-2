@@ -7,9 +7,9 @@ public class MovieModel {
     private String rating;
     private String year;
     private String description;
-    private int posterUrl;
+    private String posterUrl;
 
-    public MovieModel(String title, String studio, String rating, String year, String description, int posterUrl) {
+    public MovieModel(String title, String studio, String rating, String year, String description, String posterUrl) {
         this.title = title;
         this.studio = studio;
         this.rating = rating;
@@ -63,11 +63,11 @@ public class MovieModel {
         this.description = description;
     }
 
-    public int getPosterUrl() {
+    public String getPosterUrl() {
         return posterUrl;
     }
 
-    public void setPosterUrl(int posterUrl) {
+    public void setPosterUrl(String posterUrl) {
         this.posterUrl = posterUrl;
     }
 }

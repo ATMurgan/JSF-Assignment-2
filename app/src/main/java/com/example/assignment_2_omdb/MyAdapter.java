@@ -11,6 +11,7 @@ import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.example.assignment_2_omdb.model.MovieModel;
+import com.squareup.picasso.Picasso;
 
 import java.util.List;
 
@@ -48,7 +49,10 @@ public class MyAdapter extends RecyclerView.Adapter<MyViewHolder>{
 
         holder.title.setText(item.getTitle());
         holder.year.setText(item.getYear());
-        holder.imageView.setImageResource(item.getPosterUrl());
+        //holder.imageView.setImageResource(item.getPosterUrl());
+        Picasso.get()
+                .load(item.getPosterUrl())  // URL of the image
+                .into(holder.imageView);  // ImageView where the image will be loaded
         holder.rating.setText(item.getRating());
 
     }

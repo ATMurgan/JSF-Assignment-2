@@ -46,6 +46,9 @@ dependencies {
     androidTestImplementation(libs.espresso.core)
     implementation(libs.okhttp)
 
+    // May delete later 
+    implementation (libs.picasso)
+
 
 
 }
