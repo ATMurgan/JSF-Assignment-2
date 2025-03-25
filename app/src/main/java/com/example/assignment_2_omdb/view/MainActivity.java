@@ -12,19 +12,25 @@ import androidx.core.graphics.Insets;
 import androidx.core.view.ViewCompat;
 import androidx.core.view.WindowInsetsCompat;
 import androidx.lifecycle.ViewModelProvider;
+import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.example.assignment_2_omdb.ItemClickListener;
+import com.example.assignment_2_omdb.MyAdapter;
 import com.example.assignment_2_omdb.R;
 import com.example.assignment_2_omdb.databinding.ActivityMainBinding;
 import com.example.assignment_2_omdb.model.MovieModel;
 import com.example.assignment_2_omdb.viewmodel.MovieViewModel;
 
+import java.util.ArrayList;
+import java.util.Collection;
 import java.util.List;
 
 public class MainActivity extends AppCompatActivity implements ItemClickListener {
     ActivityMainBinding binding;
     MovieViewModel movieViewModel;
+
+    MyAdapter adapter;
 
 
     @Override
@@ -39,8 +45,24 @@ public class MainActivity extends AppCompatActivity implements ItemClickListener
         // Initialize the ViewModel
         movieViewModel = new ViewModelProvider(this).get(MovieViewModel.class);
 
+        // Initialize Adapter and set it to the RecyclerView
+        adapter = new MyAdapter(this, new ArrayList<>());
+        binding.recyclerView.setLayoutManager(new LinearLayoutManager(this));
+        binding.recyclerView.setAdapter(adapter);
+
+        // Observe movie data from ViewModel
+        movieViewModel.getMovieData().observe(this, movies -> {
+            // Update RecyclerView when movie data is available
+            if (movies != null) {
+                adapter.items.clear();
+                adapter.items.addAll((Collection<? extends MovieModel>) movies); // try to change later
+                adapter.notifyDataSetChanged();
+            }
+        });
 
 
+
+        // Takes user input and sends to the API
         binding.searchButton.setOnClickListener(v -> {
             String movieTitle = binding.inputText.getText().toString().trim();
             if (!movieTitle.isEmpty()) {
@@ -55,7 +77,6 @@ public class MainActivity extends AppCompatActivity implements ItemClickListener
         });
 
     }
-
 
 
 

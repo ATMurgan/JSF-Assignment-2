@@ -10,10 +10,12 @@ import androidx.lifecycle.ViewModel;
 import com.example.assignment_2_omdb.model.MovieModel;
 import com.example.assignment_2_omdb.utils.ApiClient;
 
+import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
 
 import java.io.IOException;
+import java.util.ArrayList;
 import java.util.List;
 
 import okhttp3.Call;
@@ -21,16 +23,17 @@ import okhttp3.Callback;
 import okhttp3.Response;
 
 public class MovieViewModel extends ViewModel {
-    private final MutableLiveData<MovieModel> movieData = new MutableLiveData<>();
+    private final MutableLiveData<List<MovieModel>> movieData = new MutableLiveData<>();
     private final MutableLiveData<String> errorMessage = new MutableLiveData<>();
 
-    public LiveData<MovieModel> getMovieData(){
+    public LiveData<List<MovieModel>> getMovieData(){
         return movieData;
     }
 
     public void getMovieDeets(String movieTitle){
         String apiKey = "10335575"; // Inserted my own API key from OMDB
-        String url = "https://www.omdbapi.com/?apikey="+apiKey+"&t="+movieTitle;
+        // Changed api request from t= to s=
+        String url = "https://www.omdbapi.com/?apikey="+apiKey+"&s="+movieTitle;
 
         ApiClient.get(url, new Callback(){
 
@@ -56,27 +59,25 @@ public class MovieViewModel extends ViewModel {
                         return;
                     }
 
-                    // Parse data from the response
-                    String title = jsonResponse.getString("Title");
-                    String year = jsonResponse.getString("Year");
-                    String posterUrl = jsonResponse.getString("Poster");
-                    String studio = jsonResponse.getString("Studio");
+                    JSONArray searchResults = jsonResponse.getJSONArray("Search");
+                    List<MovieModel> movies = new ArrayList<>();
 
+                    for (int i = 0; i < searchResults.length(); i++) {
+                        JSONObject movieJson = searchResults.getJSONObject(i);
 
-                    String movieDescription = jsonResponse.optString("Plot", "No description available.");
+                        // Create a MovieModel object and populate it with the data
+                        MovieModel movie = new MovieModel();
+                        movie.setTitle(movieJson.getString("Title"));
+                        movie.setYear(movieJson.getString("Year"));
+                        movie.setPosterUrl(movieJson.getString("Poster")); // Poster URL
+                        //movie.setType(movieJson.getString("Type"));
 
-                    // Create a MovieModel object and populate it with the data
-                    MovieModel movie = new MovieModel();
-                    movie.setTitle(title);
-                    movie.setYear(year);
-                    movie.setStudio(studio);
-                    movie.setPosterUrl(posterUrl);
-                    movie.setDescription(movieDescription);
+                        movies.add(movie);
+                    }
 
-                    movie.setDescription(movieDescription);
 
                     // Update LiveData with the fetched movie data
-                    movieData.postValue(movie);
+                    movieData.postValue(movies);
 
                 } catch (JSONException e) {
                     // Handle any JSON parsing errors

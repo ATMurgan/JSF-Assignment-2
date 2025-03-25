@@ -17,7 +17,7 @@ import java.util.List;
 
 public class MyAdapter extends RecyclerView.Adapter<MyViewHolder>{
 
-    List<MovieModel> items;
+    public List<MovieModel> items;
     Context context;
 
     public ItemClickListener clickListener;
