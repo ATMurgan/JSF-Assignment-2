@@ -12,6 +12,7 @@ public class MovieModel {
 
     private String movieType;
 
+    // Constructor for movie model
     public MovieModel(String title, String studio, String rating, String year, String plot, String movieType, String posterUrl, String movieId) {
         this.title = title;
         this.studio = studio;
@@ -23,10 +24,11 @@ public class MovieModel {
         this.movieId = movieId;
     }
 
-    // May need to remove
     public MovieModel() {
 
     }
+
+    // Getter and setter methods
 
     public String getMovieId() {
         return movieId;

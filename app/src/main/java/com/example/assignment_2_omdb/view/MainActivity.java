@@ -47,6 +47,7 @@ public class MainActivity extends AppCompatActivity implements ItemClickListener
         movieViewModel = new ViewModelProvider(this).get(MovieViewModel.class);
 
 
+        // Creates new array list for the adapter and binds to the recycler view
         adapter = new MyAdapter(this, new ArrayList<>());
         adapter.setClickListener(this);
         binding.recyclerView.setLayoutManager(new LinearLayoutManager(this));
@@ -94,6 +95,7 @@ public class MainActivity extends AppCompatActivity implements ItemClickListener
                 MovieModel updatedMovie = movies.get(0);
 
 
+                // Sets all data for the intents to display on MovieDetailsActivity
                 Intent intent = new Intent(MainActivity.this, MovieDetailsActivity.class);
                 intent.putExtra("movieTitle", updatedMovie.getTitle());
                 intent.putExtra("movieRating", updatedMovie.getRating());
@@ -115,9 +117,7 @@ public class MainActivity extends AppCompatActivity implements ItemClickListener
     protected void onResume() {
         super.onResume();
 
-
         String movieTitle = binding.inputText.getText().toString().trim();
-
 
         if (!movieTitle.isEmpty()) {
             movieViewModel.getMovieDeets(movieTitle);
