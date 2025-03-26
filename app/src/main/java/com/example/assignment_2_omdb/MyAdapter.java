@@ -49,10 +49,10 @@ public class MyAdapter extends RecyclerView.Adapter<MyViewHolder>{
 
         holder.title.setText(item.getTitle());
         holder.year.setText(item.getYear());
-        //holder.imageView.setImageResource(item.getPosterUrl());
+
         Picasso.get()
-                .load(item.getPosterUrl())  // URL of the image
-                .into(holder.imageView);  // ImageView where the image will be loaded
+                .load(item.getPosterUrl())
+                .into(holder.imageView);
         holder.rating.setText(item.getRating());
 
     }

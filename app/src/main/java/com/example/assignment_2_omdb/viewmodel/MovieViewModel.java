@@ -31,7 +31,7 @@ public class MovieViewModel extends ViewModel {
     }
 
     public void getMovieDeets(String movieTitle){
-        String apiKey = "10335575"; // Inserted my own API key from OMDB
+        String apiKey = "10335575";
         // Changed api request from t= to s=
         String url = "https://www.omdbapi.com/?apikey="+apiKey+"&s="+movieTitle+"&plot=full";
 
@@ -68,15 +68,13 @@ public class MovieViewModel extends ViewModel {
                         // Create a MovieModel object and populate it with the data
                         MovieModel movie = new MovieModel();
                         movie.setTitle(movieJson.getString("Title"));
-                        movie.setMovieId(movieJson.getString("imdbID")); //this line is to set the id
+                        movie.setMovieId(movieJson.getString("imdbID"));
                         movie.setYear(movieJson.getString("Year"));
-                        movie.setPosterUrl(movieJson.getString("Poster")); // Poster URL
-                        movie.setMovieType(movieJson.getString("Type")); //Media Type (tv/movie)
-                        //movie.setType(movieJson.getString("Type"));
+                        movie.setPosterUrl(movieJson.getString("Poster"));
+                        movie.setMovieType(movieJson.getString("Type"));
 
                         movies.add(movie);
                     }
-
 
                     // Update LiveData with the fetched movie data
                     movieData.postValue(movies);
@@ -92,7 +90,7 @@ public class MovieViewModel extends ViewModel {
         });
     }
     public void getMovieDeets2(String movieTitle) {
-        String apiKey = "10335575"; // Your OMDB API key
+        String apiKey = "10335575";
         // Updated API request to use t= for specific movie title
         String url = "https://www.omdbapi.com/?t=" + movieTitle + "&apikey=" + apiKey + "&plot=full";
 
@@ -123,14 +121,11 @@ public class MovieViewModel extends ViewModel {
                     // Create a MovieModel object and populate it with the data
                     MovieModel movie = new MovieModel();
                     movie.setTitle(jsonResponse.getString("Title"));
-                    movie.setMovieId(jsonResponse.getString("imdbID")); // IMDb ID
+                    movie.setMovieId(jsonResponse.getString("imdbID"));
                     movie.setYear(jsonResponse.getString("Year"));
-                    movie.setPosterUrl(jsonResponse.getString("Poster")); // Poster URL
-                    movie.setMovieType(jsonResponse.getString("Type")); // Movie or TV show
-                    movie.setPlot(jsonResponse.getString("Plot")); // Full plot description
-
-                    // You can add other fields like Ratings, Actors, etc. if needed
-                    // Example: movie.setRatings(jsonResponse.getJSONArray("Ratings"));
+                    movie.setPosterUrl(jsonResponse.getString("Poster"));
+                    movie.setMovieType(jsonResponse.getString("Type"));
+                    movie.setPlot(jsonResponse.getString("Plot"));
 
                     // Wrap movie into a list and post to LiveData
                     List<MovieModel> movieList = new ArrayList<>();

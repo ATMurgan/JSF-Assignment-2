@@ -57,11 +57,10 @@ public class MainActivity extends AppCompatActivity implements ItemClickListener
             // Update RecyclerView when movie data is available
             if (movies != null) {
                 adapter.items.clear();
-                adapter.items.addAll((Collection<? extends MovieModel>) movies); // try to change later
+                adapter.items.addAll((Collection<? extends MovieModel>) movies);
                 adapter.notifyDataSetChanged();
             }
         });
-
 
 
         // Takes user input and sends to the API
@@ -81,7 +80,6 @@ public class MainActivity extends AppCompatActivity implements ItemClickListener
     }
 
 
-
     @Override
     public void onClick(View v, int pos) {
         // Get the selected movie from the adapter
@@ -90,14 +88,10 @@ public class MainActivity extends AppCompatActivity implements ItemClickListener
         // Trigger the API call to fetch detailed data for the selected movie using getMovieDeets2
         movieViewModel.getMovieDeets2(selectedMovie.getTitle());
 
-        // Now, observe the movie data to ensure it has been updated before navigating
         movieViewModel.getMovieData().observe(this, movies -> {
             if (movies != null && !movies.isEmpty()) {
-                // Get the updated movie data (which should now include plot and other details from getMovieDeets2)
+                // Get the updated movie data
                 MovieModel updatedMovie = movies.get(0);
-
-                // Log the updated data to ensure we're getting the correct plot and other details
-                Log.d("MovieDetails", "Updated Movie: " + updatedMovie.getTitle() + ", Plot: " + updatedMovie.getPlot());
 
                 // Create an intent to pass the updated movie data to MovieDetailsActivity
                 Intent intent = new Intent(MainActivity.this, MovieDetailsActivity.class);
@@ -107,7 +101,7 @@ public class MainActivity extends AppCompatActivity implements ItemClickListener
                 intent.putExtra("movieType", updatedMovie.getMovieType());
                 intent.putExtra("moviePosterUrl", updatedMovie.getPosterUrl());
                 intent.putExtra("movieId", updatedMovie.getMovieId());
-                intent.putExtra("moviePlot", updatedMovie.getPlot());  // Pass the updated plot
+                intent.putExtra("moviePlot", updatedMovie.getPlot());
 
                 // Start the MovieDetailsActivity with the updated data
                 startActivity(intent);

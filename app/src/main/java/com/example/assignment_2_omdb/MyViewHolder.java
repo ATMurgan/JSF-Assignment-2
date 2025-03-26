@@ -17,8 +17,6 @@ public class MyViewHolder extends RecyclerView.ViewHolder {
     TextView year;
     TextView rating;
 
-    // MyViewHolder method may need changing up using binding, just getting things to work
-
     public MyViewHolder(@NonNull View itemView, ItemClickListener clickListener) {
         super(itemView);
 
