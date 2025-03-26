@@ -6,21 +6,42 @@ public class MovieModel {
     private String studio;
     private String rating;
     private String year;
-    private String description;
+    private String plot;
     private String posterUrl;
+    private String movieId;
 
-    public MovieModel(String title, String studio, String rating, String year, String description, String posterUrl) {
+    private String movieType;
+
+    public MovieModel(String title, String studio, String rating, String year, String plot, String movieType, String posterUrl, String movieId) {
         this.title = title;
         this.studio = studio;
         this.rating = rating;
         this.year = year;
-        this.description = description;
+        this.plot = plot;
         this.posterUrl = posterUrl;
+        this.movieType = movieType;
+        this.movieId = movieId;
     }
 
     // May need to remove
     public MovieModel() {
 
+    }
+
+    public String getMovieId() {
+        return movieId;
+    }
+
+    public void setMovieId(String movieId) {
+        this.movieId = movieId;
+    }
+
+    public String getMovieType() {
+        return movieType;
+    }
+
+    public void setMovieType(String movieType) {
+        this.movieType = movieType;
     }
 
     public String getTitle() {
@@ -55,12 +76,12 @@ public class MovieModel {
         this.year = year;
     }
 
-    public String getDescription() {
-        return description;
+    public String getPlot() {
+        return plot;
     }
 
-    public void setDescription(String description) {
-        this.description = description;
+    public void setPlot(String plot) {
+        this.plot = plot;
     }
 
     public String getPosterUrl() {

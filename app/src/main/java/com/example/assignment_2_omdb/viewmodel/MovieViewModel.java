@@ -33,7 +33,7 @@ public class MovieViewModel extends ViewModel {
     public void getMovieDeets(String movieTitle){
         String apiKey = "10335575"; // Inserted my own API key from OMDB
         // Changed api request from t= to s=
-        String url = "https://www.omdbapi.com/?apikey="+apiKey+"&s="+movieTitle;
+        String url = "https://www.omdbapi.com/?apikey="+apiKey+"&s="+movieTitle+"&plot=full";
 
         ApiClient.get(url, new Callback(){
 
@@ -68,8 +68,10 @@ public class MovieViewModel extends ViewModel {
                         // Create a MovieModel object and populate it with the data
                         MovieModel movie = new MovieModel();
                         movie.setTitle(movieJson.getString("Title"));
+                        movie.setMovieId(movieJson.getString("imdbID")); //this line is to set the id
                         movie.setYear(movieJson.getString("Year"));
                         movie.setPosterUrl(movieJson.getString("Poster")); // Poster URL
+                        movie.setMovieType(movieJson.getString("Type")); //Media Type (tv/movie)
                         //movie.setType(movieJson.getString("Type"));
 
                         movies.add(movie);
@@ -89,6 +91,66 @@ public class MovieViewModel extends ViewModel {
 
         });
     }
+    public void getMovieDeets2(String movieTitle) {
+        String apiKey = "10335575"; // Your OMDB API key
+        // Updated API request to use t= for specific movie title
+        String url = "https://www.omdbapi.com/?t=" + movieTitle + "&apikey=" + apiKey + "&plot=full";
 
+        ApiClient.get(url, new Callback() {
+
+            @Override
+            public void onFailure(@NonNull Call call, @NonNull IOException e) {
+                Log.e("MovieViewModel", "Request failed: " + e.getMessage());
+                errorMessage.postValue("Failed to fetch movie details. Please try again.");
+            }
+
+            @Override
+            public void onResponse(@NonNull Call call, @NonNull Response response) throws IOException {
+                if (!response.isSuccessful()) {
+                    Log.e("ApiClient", "Request failed");
+                    return;
+                }
+                String responseBody = response.body().string();
+                try {
+                    JSONObject jsonResponse = new JSONObject(responseBody);
+
+                    // Check if the response contains an error
+                    if (jsonResponse.has("Error")) {
+                        errorMessage.postValue(jsonResponse.getString("Error"));
+                        return;
+                    }
+
+                    // Create a MovieModel object and populate it with the data
+                    MovieModel movie = new MovieModel();
+                    movie.setTitle(jsonResponse.getString("Title"));
+                    movie.setMovieId(jsonResponse.getString("imdbID")); // IMDb ID
+                    movie.setYear(jsonResponse.getString("Year"));
+                    movie.setPosterUrl(jsonResponse.getString("Poster")); // Poster URL
+                    movie.setMovieType(jsonResponse.getString("Type")); // Movie or TV show
+                    movie.setPlot(jsonResponse.getString("Plot")); // Full plot description
+
+                    // You can add other fields like Ratings, Actors, etc. if needed
+                    // Example: movie.setRatings(jsonResponse.getJSONArray("Ratings"));
+
+                    // Wrap movie into a list and post to LiveData
+                    List<MovieModel> movieList = new ArrayList<>();
+                    movieList.add(movie);
+
+                    // Update LiveData with the fetched movie details
+                    movieData.postValue(movieList);
+
+                } catch (JSONException e) {
+                    // Handle any JSON parsing errors
+                    e.printStackTrace();
+                    errorMessage.postValue("Error parsing movie data. Please try again.");
+                }
+            }
+
+        });
+    }
 
 }
+
+
+
+
