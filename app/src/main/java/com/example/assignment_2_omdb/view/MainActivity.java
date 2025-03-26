@@ -43,21 +43,21 @@ public class MainActivity extends AppCompatActivity implements ItemClickListener
         binding = ActivityMainBinding.inflate(getLayoutInflater());
         setContentView(binding.getRoot());
 
-        // Initialize the ViewModel
+
         movieViewModel = new ViewModelProvider(this).get(MovieViewModel.class);
 
-        // Initialize Adapter and set it to the RecyclerView
+
         adapter = new MyAdapter(this, new ArrayList<>());
-        adapter.setClickListener(this); //used to fix a bug
+        adapter.setClickListener(this);
         binding.recyclerView.setLayoutManager(new LinearLayoutManager(this));
         binding.recyclerView.setAdapter(adapter);
 
-        // Observe movie data from ViewModel
+
         movieViewModel.getMovieData().observe(this, movies -> {
-            // Update RecyclerView when movie data is available
-            if (movies != null) {
+
+            if (movies != null && !movies.isEmpty()) {
                 adapter.items.clear();
-                adapter.items.addAll((Collection<? extends MovieModel>) movies);
+                adapter.items.addAll(movies);
                 adapter.notifyDataSetChanged();
             }
         });
@@ -85,15 +85,15 @@ public class MainActivity extends AppCompatActivity implements ItemClickListener
         // Get the selected movie from the adapter
         MovieModel selectedMovie = adapter.items.get(pos);
 
-        // Trigger the API call to fetch detailed data for the selected movie using getMovieDeets2
+
         movieViewModel.getMovieDeets2(selectedMovie.getTitle());
 
         movieViewModel.getMovieData().observe(this, movies -> {
             if (movies != null && !movies.isEmpty()) {
-                // Get the updated movie data
+
                 MovieModel updatedMovie = movies.get(0);
 
-                // Create an intent to pass the updated movie data to MovieDetailsActivity
+
                 Intent intent = new Intent(MainActivity.this, MovieDetailsActivity.class);
                 intent.putExtra("movieTitle", updatedMovie.getTitle());
                 intent.putExtra("movieRating", updatedMovie.getRating());
@@ -103,11 +103,24 @@ public class MainActivity extends AppCompatActivity implements ItemClickListener
                 intent.putExtra("movieId", updatedMovie.getMovieId());
                 intent.putExtra("moviePlot", updatedMovie.getPlot());
 
-                // Start the MovieDetailsActivity with the updated data
+
                 startActivity(intent);
             } else {
                 Log.d("MovieDetails", "Movie data is null or empty.");
             }
         });
+    }
+
+    @Override
+    protected void onResume() {
+        super.onResume();
+
+
+        String movieTitle = binding.inputText.getText().toString().trim();
+
+
+        if (!movieTitle.isEmpty()) {
+            movieViewModel.getMovieDeets(movieTitle);
+        }
     }
 }

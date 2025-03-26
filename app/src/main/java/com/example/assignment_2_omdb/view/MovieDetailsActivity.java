@@ -17,13 +17,14 @@ import java.lang.reflect.Type;
 
 public class MovieDetailsActivity extends AppCompatActivity {
 
+
     TextView movieTitle, movieYear, movieDescription, movieId, movieType;
     ImageView moviePoster;
 
     Button backButton;
 
     @Override
-    protected void onCreate(Bundle savedInstanceState){
+    protected void onCreate(Bundle savedInstanceState) {
 
         super.onCreate(savedInstanceState);
         setContentView(R.layout.movie_details_layout);
@@ -41,7 +42,7 @@ public class MovieDetailsActivity extends AppCompatActivity {
         String type = "Type: " + getIntent().getStringExtra("movieType");
         String year = "Released/Aired: " + getIntent().getStringExtra("movieYear");
         String posterUrl = intent.getStringExtra("moviePosterUrl");
-        String id = "Database ID: " +intent.getStringExtra("movieId");
+        String id = "Database ID: " + intent.getStringExtra("movieId");
         String plot = getIntent().getStringExtra("moviePlot");
 
 
@@ -53,20 +54,20 @@ public class MovieDetailsActivity extends AppCompatActivity {
 
         Picasso.get().load(posterUrl).into(moviePoster);
 
-        backButton.setOnClickListener(view -> {
-            onBackPressed();
+        backButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+
+                Intent intent = new Intent(MovieDetailsActivity.this, MainActivity.class);
+                intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
+                startActivity(intent);
+                finish();
+            }
         });
-        }
-
-
-
-
-
-
-
 
 
     }
+}
 
 
 

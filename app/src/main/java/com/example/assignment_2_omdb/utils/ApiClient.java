@@ -15,9 +15,9 @@ public class ApiClient {
     public static void get(String url, Callback callback) {
         Request request = new Request.Builder()
                 .url(url)
-                .build(); // This sets the HTTP request method to GET by default.
+                .build();
 
-        // Executes the request asynchronously using OkHttpClient.
+
         client.newCall(request).enqueue(callback);
     }
 
